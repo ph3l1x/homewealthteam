@@ -1,0 +1,5 @@
+dialog:
+  js:
+    js/powrsocialfeed.dialog.js: { minified: true }
+  dependencies:
+    - core/drupal.dialog

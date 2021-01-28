@@ -1,0 +1,176 @@
+<?php
+
+include("simple_html_dom.php");
+
+
+
+use \Drupal\node\Entity\Node;
+use \Drupal\file\Entity\File;
+
+
+$eastIdahoNews = 'https://www.eastidahonews.com/feed/';
+$localNews8 = 'https://localnews8.com/feed/';
+$idahoFallsIdaho = 'https://www.idahofallsidaho.gov/RSSFeed.aspx?ModID=1&CID=All-newsflash.xml';
+$idahoStateJournal = 'https://www.idahostatejournal.com/search/?f=rss&t=article&c=news&l=50&s=start_time&sd=asc';
+
+
+
+function newz_cron() {
+
+    $boiseStatePublicRadio = 'https://www.boisestatepublicradio.org/rss.xml';
+    boiseStatePublicRadio($boiseStatePublicRadio);
+}
+
+function boiseStatePublicRadio($feed_url) {
+
+    $database = \Drupal::database();
+    $feed_data = (array) simplexml_load_file($feed_url);
+
+    foreach($feed_data['channel']->item as $item) {
+
+        $author = $item->author;
+        $description = $item->description;
+        $title = $item->title;
+        $link = $item->link;
+        $guid = $item->guid;
+        $pubDate = $item->pubDate;
+
+        /* Get link data */
+
+
+//        $link_data = file_get_html('https://www.boisestatepublicradio.org/post/breaking-down-legacy-race-traditional-music-america#stream/0', false, null, 0);
+        $link_data = file_get_html($link, false, null, 0);
+        foreach($link_data->find('div.post-body') as $row) {
+
+            $newzImage = $row->find('.lightbox')[0]->attr['href'];
+
+            if($newzImage) {
+
+                $newzHTML = $row->find('.field-name-body .field-item', 0)->innertext;
+
+                $imageUrl = explode('//', $newzImage);
+                if($imageUrl[1]) {
+                    $newzImage = 'http://' . $imageUrl[1];
+                }
+
+                $imageData = file_get_contents($newzImage);
+                $filename = basename($newzImage);
+                $destination = 'public://' . $filename;
+                $real_file_path = drupal_realpath($destination);
+                file_put_contents('/var/www/homewealthteam.com/web/sites/default/files/' . basename($newzImage), $imageData, FILE_EXISTS_REPLACE);
+                $file = File::create([
+                    'filename' => $filename,
+                    'filepath' => $real_file_path,
+                    'filemime' => mime_content_type($real_file_path),
+                    'filesize' => filesize($real_file_path),
+                    'uri' => $destination,
+                    'uid' => 1,
+                    'timestamp' => time(),
+                    'status' => 1
+                ]);
+
+                $file->save();
+
+                /* Check for existing Titles */
+                $database = \Drupal::database();
+                $query = $database->query("select field_guid_value from node__field_guid where field_guid_value = '" . $guid . "'");
+                $result = $query->fetchAll();
+
+                if(!$result) {
+
+
+
+                    if ($imageData) {
+
+                        $node = Node::create([
+                            'type' => 'must_see_do',
+                            'title' => $title,
+                            'field_image' => [
+                                'target_id' => $file->id(),
+                                'alt' => $title,
+                                'title' => $title
+                            ],
+                            'body' => $newzHTML,
+                            'field_brief_summary' => $description,
+                            'field_guid' => $guid,
+                            'field_link_url' => [
+                                'uri' => $link,
+                                'title' => $link
+                            ],
+                            'field_tags' => [
+                                'target_id' => 5
+                            ]
+                        ]);
+                        $node->body->format = "full_html";
+
+                        $node->save();
+                    }
+                }
+            }
+        }
+//        die("Ran Through Once");
+    }
+
+
+};
+
+
+
+//function idahoStateJournal($feed_url) {
+//    $feed_data = (array) simplexml_load_file($feed_url);
+//
+//    foreach($feed_data['channel']->item as $items) {
+//
+//        $title = $items->title;
+//        $description = $items->description;
+//        $pubDate = $items->pubDate;
+//        $guid = $items->guid;
+//        $link = $items->link;
+//
+//
+//        $link_data = file_get_html($link, false, null, 0);
+//        foreach($link_data->find('div.asset-content') as $row) {
+//
+//            $preview = $row->find('div.subscriber-preview', 0)->plaintext;
+////            $title = $row->find('h1.headline', 0)->first_child()->plaintext;
+////
+//     //       var_dump($title);
+//            print '<pre>';
+//            print_r($preview);
+//            print '</pre>';
+//            sleep(2);
+//           // die();
+//        }
+//
+//
+//        var_dump($link);
+//        print "<br><br>";
+//       // var_dump(file_get_contents($link));
+//        $author = $items->author;
+//    }
+//
+//
+//    print "<pre>";
+//    print_r($feed_data);
+//    print "</pre>";
+//}
+
+
+
+//idahoStateJournal($idahoStateJournal);
+
+
+
+
+
+
+
+
+
+function newz_theme($existing, $type, $theme, $path) {
+  return [
+      'hwtheme' => [
+          'variables' => ['newz_var' => 'xxx'],
+      ],
+  ];
+}

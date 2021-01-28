@@ -1,0 +1,4 @@
+feeds_migrate_importer.admin:
+  route_name: feeds_migrate_importer.admin
+  title: Feeds migrate
+  base_route: system.admin_content

@@ -1,0 +1,7 @@
+newz.content:
+  path: '/newz'
+  defaults:
+    _controller: '\Drupal\newz\Controller\NewzController::content'
+    _title: 'Sap News'
+  requirements:
+    _permission: 'access content'

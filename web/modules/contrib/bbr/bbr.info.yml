@@ -1,0 +1,10 @@
+name: 'Back Button Refresh'
+type: module
+description: 'Hard refresh the page when someone clicks on browser back button.'
+# core: 8.x
+
+# Information added by Drupal.org packaging script on 2017-11-22
+version: '8.x-1.1'
+core: '8.x'
+project: 'bbr'
+datestamp: 1511343787

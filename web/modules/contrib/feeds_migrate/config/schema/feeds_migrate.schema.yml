@@ -1,0 +1,32 @@
+feeds_migrate.importer.*:
+  type: config_entity
+  label: "Feeds Migrate Importer"
+  mapping:
+    id:
+      type: string
+      label: "ID"
+    label:
+      type: label
+      label: "Label"
+    importFrequency:
+      type: integer
+      label: "Import frequency"
+    existing:
+      type: string
+      label: "Existing content"
+    keepOrphans:
+      type: boolean
+      label: "Keep orphaned Items"
+    migrationId:
+      type: string
+      label: 'Migration ID'
+    migrationConfig:
+      type: mapping
+      label: "Migration configuration"
+      mapping:
+        source:
+          type: ignore
+          label: 'Source'
+        destination:
+          type: ignore
+          label: 'Destination'

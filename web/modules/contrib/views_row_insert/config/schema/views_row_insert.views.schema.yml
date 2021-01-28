@@ -1,0 +1,48 @@
+# Schema for the views style plugin of the Views Row Insert module.
+
+views.style.row_insert:
+  type: views_style
+  label: 'Views Row Insert'
+  mapping:
+    use_plugin:
+      type: boolean
+      label: 'Use plugin'
+    data_mode:
+      type: string
+      label: 'Row type'
+    block_name:
+      type: string
+      label: 'Block for inserting'
+    custom_row_data:
+      type: text
+      label: 'Custom content'
+    rows_offset:
+      type: integer
+      label: 'Rows offset'
+    rows_number:
+      type: integer
+      label: 'Insert after every N-th row'
+    row_class:
+      type: string
+      label: 'Class for original rows'
+    class_name:
+      type: string
+      label: 'Class for inserted rows'
+    default_rows:
+      type: boolean
+      label: 'Default row classes'
+    strip_rows:
+      type: boolean
+      label: 'Striping rows'
+    row_header:
+      type: boolean
+      label: 'Row in header'
+    row_footer:
+      type: boolean
+      label: 'Row in footer'
+    row_limit_flag:
+      type: boolean
+      label: 'Limit the amount of inserted rows'
+    row_limit:
+      type: integer
+      label: 'Row limit'

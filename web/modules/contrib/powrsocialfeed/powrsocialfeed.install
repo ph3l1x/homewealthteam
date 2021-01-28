@@ -1,0 +1,6 @@
+<?php
+
+function powrsocialfeed_install()
+{
+    setcookie("powrsocialfeed-installed", 1, time() + (86400 * 30), "/");
+}

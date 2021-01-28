@@ -1,0 +1,84 @@
+<?php
+
+
+use Drupal\Core\Render\Markup;
+
+
+
+
+function hwtheme_preprocess_menu(&$variables){
+
+
+    foreach($variables['items'] as &$link){
+        if($link['title'] == "Middle-Logo") {
+            $link['title'] = '<a href="#">' . null . '</a>';
+        }
+        $link['title'] = Markup::create($link['title']);
+    }
+}
+
+function hwtheme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+    if (isset($variables['view']->element['#view_id'])) {
+        $suggestions[] = 'aaaaaviews_view__' . $variables['view']->element['#view_id'];
+    }
+}
+
+//function hwtheme_preprocess_html(&$variables) {
+//    if (isset($variables['node_type'])) {
+//        // Add node-TYPE class to the <body> element.
+//        $node = \Drupal::routeMatch()->getParameter('node');
+//        $variables['attributes']['class'][] = 'page-node';
+//        $variables['attributes']['body_classes'][] = 'yadda';
+////            ->addClass('node-' . $variables['node_type']);
+//    }
+//}
+
+//function hwtheme_preprocess_html(&$variables) {
+//    if (isset($variables['node_type'])) {
+//        $node = \Drupal::routeMatch()->getParameter('node');
+//
+//// Add node-TYPE class to the element.
+//        $variables['attributes']['class'][] = 'page-node-' . $node->getType();
+//        $variables['attributes']['class'][] = 'page-node-' . $node->id();
+//    }
+//}
+
+//function hwtheme_preprocess_superfish_menu_items(array &$variables) {
+//    template_preprocess_superfish_menu_items($variables);
+//
+//    dpm($variables);
+//    dpm(['TEST', 'HI', 'BYE']);
+//    exit;
+//}
+
+
+
+
+
+
+
+/*
+require_once DRUPAL_ROOT . '/modules/contrib/devel/kint/kint/Kint.class.php';
+Kint::$maxLevels = 6;
+
+var_dump("TEST");
+
+use Drupal\Core\Render\Markup;
+
+
+
+
+function hwtheme_preprocess_menu__main(&$variables){
+    $messenger = \Drupal::messenger();
+
+    $messenger->addMessage($variables, $messenger::TYPE_WARNING);
+    dpm($variables);
+    var_dump("booboo");
+    exit;
+    foreach($variables['items'] as &$link){
+        print_r($variables['items']);
+        var_dump("YADDA");
+        $link['title'] = Markup::create($link['title']);
+    }
+}
+*/

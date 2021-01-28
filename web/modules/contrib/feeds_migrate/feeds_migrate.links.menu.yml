@@ -1,0 +1,12 @@
+entity.feeds_migrate_importer.collection:
+  title: 'Feeds Migrate'
+  route_name: entity.feeds_migrate_importer.collection
+  description: 'View and add Feeds Migrations'
+  parent: system.admin_content
+
+entity.feeds_migrate_importer.add_migration:
+  title: 'Add Migration'
+  route_name: entity.migration.add_form
+  description: 'Add a Feeds migration'
+  parent: migrate_tools.menu
+  route_parameters: { migration_group: 'feeds_migration', source_plugin: 'url'}

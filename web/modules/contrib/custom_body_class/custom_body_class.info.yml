@@ -1,0 +1,10 @@
+type: module
+name : Custom body class
+description : Adds custom class/es
+# core : 8.x
+
+# Information added by Drupal.org packaging script on 2018-03-30
+version: '8.x-1.2'
+core: '8.x'
+project: 'custom_body_class'
+datestamp: 1522390386

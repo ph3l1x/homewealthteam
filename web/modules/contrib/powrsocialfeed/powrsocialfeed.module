@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrsocialfeed.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrsocialfeed_theme() {
+    global $base_url;
+    return [
+        'powrsocialfeed_config_popup' => [
+            'template'  => 'powrsocialfeed_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrsocialfeed_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrsocialfeed-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrsocialfeed-installed']);
+        setcookie('powrsocialfeed-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrsocialfeed-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrsocialfeed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrsocialfeed-installed'])) {
+        $form['powrsocialfeed_config_popup'] = [
+            '#theme' => 'powrsocialfeed_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrsocialfeed/dialog';
+    }
+}

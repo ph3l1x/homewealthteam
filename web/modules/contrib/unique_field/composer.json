@@ -1,0 +1,6 @@
+{
+ "name": "drupal / unique_field",
+ "type": "drupal-module",
+ "description": "Provides functionality for unique fields.",
+ "homepage": "http://drupal.org/project/unique_field"
+}

@@ -1,0 +1,6 @@
+newz.admin:
+  title: 'Newz'
+  description: 'Custom News Importing'
+  parent: system.admin_config_development
+  route_name: newz.content
+  weight: 100
